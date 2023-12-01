@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>DASH Test Player</title>
+  <link rel="stylesheet" href="Style.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <h1 style="text-align: center;"> Test "DASH" Player </h1>
+</head>
+  <div class="player-wrapper">
+    <div id="player"></div>
+  </div>
+  <form>
+    <div class="container">
+    <br>
+    <br>
+  <b><label for="videoUrldash">Video DASH URL:</label></b>
+  <b><input type="text" id="videoUrldash" placeholder="Enter video URL" size="50">
+    <br>
+    <br>
+    <label for="drmURL">Widevine URL:</label></b>
+    <input type="text" id="drmURL" placeholder="Enter Widevine URL" size="53">
+    <br>
+    <br>
+    <button class="button" type="button" onclick="loadVideodash()">Load Video</button>
+  </form>
+
+  <script src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer.js" type="text/javascript"></script>
+  <script>
+    var player;
+    var conf = {
+      key: '741ba0ff-a77f-4de5-9c64-f24a1ae011cb',
+    };
+
+    function initializePlayer() {
+      if (!player) {
+        player = new bitmovin.player.Player(document.getElementById('player'), conf);
+      }
+    }
+
+    function loadVideodash() {
+      var videoUrldash = document.getElementById('videoUrldash').value;
+      var drmURL = document.getElementById('drmURL').value;
+
+      var sourcedash = {
+        dash: videoUrldash,
+        drm: {
+          widevine: {
+            LA_URL: drmURL,
+            audioRobustness : '',
+            videoRobustness : '',
+          },
+        },
+        
+      };      
+
+      if (!player) {
+        initializePlayer();
+      }
+
+      player.load(sourcedash)
+        .then(function() {
+          console.log('Video loaded successfully!');
+        })
+        .catch(function(error) {
+          console.error('Error loading video:', error);
+        });
+    }    
+
+    window.onload = initializePlayer;
+  </script>
+<br>
+<br>  
+<a href="index.html" button class="button">HOME</a>
+</div>
+</body>
+</html>
